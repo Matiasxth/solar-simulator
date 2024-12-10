@@ -69,22 +69,23 @@ def calculos(datos):
 
 def simular_disposicion_paneles(numero_paneles, columnas=5):
     filas = math.ceil(numero_paneles / columnas)
-    plt.figure(figsize=(10, 6))
+    fig, ax = plt.subplots(figsize=(10, 6))
     for i in range(filas):
         for j in range(columnas):
             if i * columnas + j < numero_paneles:
-                plt.gca().add_patch(plt.Rectangle((j, -i), 1, 1, edgecolor="black", facecolor="skyblue"))
-    plt.xlim(0, columnas)
-    plt.ylim(-filas, 0)
-    plt.gca().set_aspect("equal", adjustable="box")
-    plt.title("Disposición de los paneles solares")
-    plt.show()
+                ax.add_patch(plt.Rectangle((j, -i), 1, 1, edgecolor="black", facecolor="skyblue"))
+    ax.set_xlim(0, columnas)
+    ax.set_ylim(-filas, 0)
+    ax.set_aspect("equal", adjustable="box")
+    ax.set_title("Disposición de los paneles solares")
+    return fig
 
 def mostrar_resultados_streamlit(resultados):
     st.subheader("Resultados del Sistema Solar")
     for key, value in resultados.items():
         st.write(f"{key}: {value:.2f}")
-    st.pyplot(simular_disposicion_paneles(resultados["Número de paneles"]))
+    fig = simular_disposicion_paneles(resultados["Número de paneles"])
+    st.pyplot(fig)
 
 def guardar_resultados_csv(resultados):
     df = pd.DataFrame([resultados])
